@@ -1,31 +1,40 @@
-import { Component, OnInit } from '@angular/core';
-import { HttpClient } from '@angular/common/http';
+import { Component } from '@angular/core';
+import { PokeapiService } from '../pokeapi.service';
+import { Router } from '@angular/router';
 
 @Component({
-  selector: 'app-pokedex',
-  templateUrl: './pokedex.component.html',
-  styleUrls: ['./pokedex.component.scss']
+  selector: 'app-home',
+  templateUrl: 'home.page.html',
+  styleUrls: ['home.page.scss'],
+  standalone: false,
 })
-export class PokedexComponent implements OnInit {
-  pokemons: any[] = [];
+export class HomePage {
 
-  constructor(private http: HttpClient) {}
+  listPokemones:any=[];
 
-  ngOnInit() {
-    this.loadPokemons();
+  constructor(private pokeService: PokeapiService, private router: Router) {}
+
+  ngOnInit(){
+    this.pokeService.getListPokemones().subscribe((data)=>{
+      this.listPokemones=data.results
+      console.log(data.results)
+    })
+
   }
 
-  loadPokemons() {
-    this.http.get<any>('https://pokeapi.co/api/v2/pokemon?limit=151')
-      .subscribe(response => {
-        this.pokemons = response.results.map((pokemon: any, index: number) => {
-          return {
-            name: pokemon.name,
-            url: pokemon.url,
-            id: index + 1,
-            image: `https://raw.githubusercontent.com/PokeAPI/sprites/master/sprites/pokemon/${index + 1}.png`
-          };
-        });
-      });
+  handleDetail(url: string) {
+    const id = url.split('/').filter(part => part).pop(); // Extrae el ID del Pokémon
+    this.router.navigate(['/pokemon', id]); // Redirige a la página de detalles
   }
+
+  handleImage(item: any): string {
+    if (!item.url) return 'assets/default-image.png'; // Imagen por defecto si no hay URL
+  
+    // Extraer el ID del Pokémon desde la URL de la API
+    const id = item.url.split('/').filter((part: string) => part).pop();
+    
+    // Retornar la URL de la imagen desde PokéAPI
+    return `https://raw.githubusercontent.com/PokeAPI/sprites/master/sprites/pokemon/${id}.png`;
+  }
+  
 }

@@ -1,25 +1,32 @@
-ion-card {
+#container {
   text-align: center;
-  box-shadow: 0px 4px 6px rgba(0, 0, 0, 0.1);
-  border-radius: 12px;
-  transition: transform 0.2s ease-in-out;
-  
-  &:hover {
-    transform: scale(1.05);
-  }
+
+  position: absolute;
+  left: 0;
+  right: 0;
+  top: 50%;
+  transform: translateY(-50%);
 }
 
-ion-card-title {
-  font-size: 1.2em;
-  font-weight: bold;
-  color: #ffcb05;
+#container strong {
+  font-size: 20px;
+  line-height: 26px;
 }
 
-ion-toolbar {
-  --background: #dc0a2d;
-  color: white;
+#container p {
+  font-size: 16px;
+  line-height: 22px;
+
+  color: #8c8c8c;
+
+  margin: 0;
 }
 
-ion-content {
-  --background: #f6f6f6;
+#container a {
+  text-decoration: none;
+}
+
+image{
+  width: 100px;
+  height: 100px;
 }
